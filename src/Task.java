@@ -4,21 +4,15 @@ public class Task
 {
 	private Date complete;
 	private double percentDone;
-	private long time;
+	private double time; // Hours Left
 	private byte priority;
-	private boolean active;
 
-	public Task(Date end, long estimate, byte pri, boolean active)
+	public Task(Date end, long estimate, byte pri)
 	{
 		this.complete = end;
 		this.time = estimate;
 		this.priority = pri;
-		this.active = active;
 	}
-
-	public boolean getActive() { return this.active; }
-
-	public void setActive(boolean state) { this.active = state; }
 
 	public byte getPriority() { return this.priority; }
 
@@ -26,13 +20,33 @@ public class Task
 
 	public void setPercentDone(double done) { this.percentDone += done; }
 
-	public long getTime()
+	public double getTime()
 	{
 		return time;
+	}
+
+	public double getTimeLeft()
+	{
+		return (time * (1 - percentDone));
 	}
 
 	public void setTime(long time)
 	{
 		this.time = time;
+	}
+
+	public double getPercentDone()
+	{
+		return percentDone;
+	}
+
+	public Date getComplete()
+	{
+		return complete;
+	}
+
+	public void setComplete(Date complete)
+	{
+		this.complete = complete;
 	}
 }

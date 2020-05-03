@@ -17,6 +17,10 @@ class TimeFrameProductivity implements Habit
 	{
 		// To Implement
 	}
+	public static double findHour(long epoch)
+	{
+		return epoch / 3600000.0 % 24;
+	}
 
 	public double getTimeFrameBegin()
 	{
