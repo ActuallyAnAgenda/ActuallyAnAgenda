@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ActuallyAnAgenda - Dashboard</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
+        <link rel="stylesheet" href='header.css'>
+        <link rel="stylesheet" href='style.css'>
+        <link rel="icon" href="img/favicon.ico">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+              $("#navbar").hover(function(){
+                $("#fade").css("display", "block");
+                }, function(){
+                $("#fade").css("display", "none");
+              });
+            });
+        </script>
+        <!-- update the version number as needed -->
+        <script defer src="/__/firebase/7.14.2/firebase-app.js"></script>
+        <!-- include only the Firebase features as you need -->
+        <script defer src="/__/firebase/7.14.2/firebase-auth.js"></script>
+        <script defer src="/__/firebase/7.14.2/firebase-database.js"></script>
+        <script defer src="/__/firebase/7.14.2/firebase-messaging.js"></script>
+        <script defer src="/__/firebase/7.14.2/firebase-storage.js"></script>
+        <script defer src="/__/firebase/7.14.2/firebase-firestore.js"></script>
+        <!-- initialize the SDK after all desired features are loaded -->
+        <script defer src="/__/firebase/init.js"></script>
+    </head>
+    <body style="background-color: #f9f9f9;">
+        <header>
+            <nav id="navbar">
+                <ul>
+                    <li>
+                        <a class="button button1"><img src="img/logo.png" alt="logo" width="60"><p class="name">Actually An<br>Agenda</p></a>
+                    </li>
+                    <li>
+                        <a href="agenda.html" class="button button2"><img src="img/calendar.png" alt="logo" width="60"><p>Agenda</p></a>
+                    </li>
+                    <li>
+                        <a href="contact.html" class="button button5"><img src="img/mail.png" alt="logo" width="60"><p>Contact</p></a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div id="fade"></div>
+            <div class="top">
+                <h1>Agenda</h1>
+            </div>
+            <h2>Today</h2>
+            <p id="date"></p>
+            <script src="date.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+            <div class="container" id="taskList">
+                <h3>Tasks<button onclick="openForm()"><b>+</b> Task</button></h3>
+                <div id="tasks"></div>
+            </div>
+            <div class="container" id="schedule">
+                <h3>Schedule</h3>
+                <div id="sched"></div>
+            </div>
+            <script src="config.js"></script>
+            <div class="popup" id="addTask">
+                <h5>New Task</h5>
+                <form>
+                    <p class="label">Name</p>
+                    <input id="txtTask" type="text" placeholder="Task" required>
+                    <p class="label">Due Date</p>
+                    <input id="dateDue" type="date" required>
+                    <p class="label">Priority<p id="val"></p></p>
+                    <input id="priority" type="range" min="1" max="100" value="50" class="slider">
+                    <p class="label">Estimated Completion Time (hrs)</p>
+                    <input id="time" type="number" min="1" required>
+                    <button id="btnAdd" onclick="newTask()">Add Task</button>
+                    <button id="btnCancel" onclick="closeForm()">Cancel</button>
+                </form>
+                <script>
+                    slider = document.getElementById("priority");
+                    output = document.getElementById("val");
+                    output.innerHTML = slider.value;
+                    slider.oninput = function() {
+                        output.innerHTML = this.value;
+                    }
+                </script>
+            </div>
+        </main>
+    </body>
+</html>
