@@ -78,18 +78,14 @@ function showTasks() {
             output.innerHTML = `Completion: ${slider.value}%`
             slider.oninput = function() {
                 output.innerHTML = `Completion: ${slider.value}%`;
-                return docRef.update({
+                db.collection(user.uid).doc(doc.id).update({
                     per: slider.value
-                }).then(function() {
-                    console.log("Document successfully updated!");
-                })
-                .catch(function(error) {
-                    console.error("Error updating document: ", error);
                 });
             }
         });
     });
 }
+
 function showSchedule() {
     var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     console.log(user);
@@ -105,8 +101,8 @@ function showSchedule() {
             for(var i = 0; i < data.startTime.length; i++) {
                 var start = new Date(data.startTime[i]*1000);
                 var end = new Date(data.endTime[i]*1000);
-                dates += `<p>Start ${i+1}: ${start.getHours()}:${start.getMinutes()}, ${month[start.getMonth()]} ${start.getDate()}, ${start.getFullYear()}</p>
-                            <p>End ${i+1}: ${end.getHours()}:${end.getMinutes()}, ${month[end.getMonth()]} ${end.getDate()}, ${end.getFullYear()}</p>`;
+                dates += `<p style="margin-top: 6px;">Section ${i+1}: Work from ${start.getHours()}:${start.getMinutes()}, ${month[start.getMonth()]} ${start.getDate()}, ${start.getFullYear()}
+                            to ${end.getHours()}:${end.getMinutes()}, ${month[end.getMonth()]} ${end.getDate()}, ${end.getFullYear()}</p>`;
             }
             document.getElementById("sched").innerHTML += `<div class="schedule" style="margin-left: 50px; margin-top: 10px;width: 600px;">
                                                                 <h4>${data.name}</h4>
