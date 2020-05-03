@@ -6,6 +6,7 @@ import com.google.api.client.json.jackson2.*;
 import com.google.cloud.firestore.*;
 import com.google.firebase.*;
 import com.google.firebase.cloud.*;
+import com.google.firebase.database.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,15 +20,29 @@ public class GetInfoFromDatabase {
 	}
 	public void setup() throws IOException
 	{
-		// Use a service account
-		InputStream serviceAccount = new FileInputStream("C:\\Users\\cotbe\\Documents\\ActuallyAnAgenda\\serviceAccount.json");
-		GoogleCredentials credentials = GoogleCredentials.fromStream(serviceAccount);
+		FileInputStream serviceAccount = new FileInputStream("C:\\Users\\cotbe\\Documents\\ActuallyAnAgenda\\serviceAccount.json");
+
+		// Initialize the app with a service account, granting admin privileges
 		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(credentials)
+				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
+				.setDatabaseUrl("https://actuallyanagenda.firebaseio.com/")
 				.build();
 		FirebaseApp.initializeApp(options);
 
-		Firestore db = FirestoreClient.getFirestore();
+		// As an admin, the app has access to read and write all data, regardless of Security Rules
+		DatabaseReference ref = FirebaseDatabase.getInstance()
+				.getReference("restricted_access/secret_document");
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				Object document = dataSnapshot.getValue();
+				System.out.println(document);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError error) {
+			}
+		});
 	}
 
 	public ArrayList<Task> queryAllTasks(String userID) throws Exception
