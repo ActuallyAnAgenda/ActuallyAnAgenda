@@ -6,40 +6,33 @@ public interface Habit
 class TimeFrameProductivity implements Habit
 {
 	// Hour in UTC: (System.currentTimeMillis() / 3600000.0) % (24)
-	private double timeFrameBegin, timeFrameEnd;
+	private double bestWorkingTime;
 	public TimeFrameProductivity()
 	{
-		timeFrameBegin = 9.0; // 9 AM
-		timeFrameEnd = 17.0; // 5 PM;
+		bestWorkingTime = 13.0; // 1 PM
 	}
 	@Override
 	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
-		// To Implement
+		double eventTimeNeeded = event.getAssociatedTask().getTime();
+		double timeWorkedOn = (event.getEnd().getTime() - event.getBegin().getTime()) / (60.0 * 60 * 1000);
+		double expectedPercentageCompleted = eventTimeNeeded / timeWorkedOn;
+		double mid = ((event.getEnd().getTime() + event.getBegin().getTime()) / 2.0) / 3600000.0 % (24);
+		if(completionPercentage > expectedPercentageCompleted * 1.5) bestWorkingTime = mid;
 	}
 	public static double findHour(long epoch)
 	{
 		return epoch / 3600000.0 % 24;
 	}
 
-	public double getTimeFrameBegin()
+	public double getBestWorkingTime()
 	{
-		return timeFrameBegin;
+		return bestWorkingTime;
 	}
 
-	public void setTimeFrameBegin(double timeFrameBegin)
+	public void setBestWorkingTime(double bestWorkingTime)
 	{
-		this.timeFrameBegin = timeFrameBegin;
-	}
-
-	public double getTimeFrameEnd()
-	{
-		return timeFrameEnd;
-	}
-
-	public void setTimeFrameEnd(double timeFrameEnd)
-	{
-		this.timeFrameEnd = timeFrameEnd;
+		this.bestWorkingTime = bestWorkingTime;
 	}
 }
 class ExtendedWorkDuration implements Habit

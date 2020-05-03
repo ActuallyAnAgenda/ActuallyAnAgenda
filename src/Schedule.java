@@ -1,3 +1,4 @@
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class Schedule
 	{
 		final double totalTime = toAdd.getTimeLeft();
 		ExtendedWorkDuration bestWorkingShifts = user.getExtendedWorkDuration();
-		final int workSessionsApproximate = (int) (totalTime / bestWorkingShifts.getMaxHoursWork());
+		final int workSessionsApproximate = (int) Math.ceil(totalTime / bestWorkingShifts.getMaxHoursWork());
 		final double eachWorkSessionTime = totalTime / workSessionsApproximate;
 
 		for(int i = 0; i < workSessionsApproximate; i++)
@@ -42,23 +43,21 @@ public class Schedule
 		TimeFrameProductivity productivity = user.getTimeFrameProductivity();
 		ExtendedWorkDuration workDuration = user.getExtendedWorkDuration();
 		double idealWorkingHours = workDuration.getMaxHoursWork(), idealBreak = workDuration.getMinHoursBreak();
-		ArrayList<ScheduleEvent> active = getActiveEvents();
-		Collections.sort(active);
+		Collections.sort(currentEventlist);
 		int idx = 0;
-		long dayMillisStart = System.currentTimeMillis();
+		long dayMillisStart = new Date(System.currentTimeMillis()).getTime();
 		long dayMillisEnd = event.getAssociatedTask().getComplete().getTime();
-
-		double minCost = Long.MAX_VALUE;
+		double minCost = Double.MAX_VALUE;
 		Date bestStart = null, bestEnd = null;
-		for(long st = dayMillisStart; st <= dayMillisEnd; st += 60000) // Check each minute of the day brute force
+		for(long st = dayMillisStart; st <= dayMillisEnd; st += 1800000) // Check each minute of the day brute force
 		{
-			for(long en = dayMillisStart; en <= dayMillisEnd; en += 60000) // Check each minute of the day brute force
+			for(long en = st; en <= dayMillisEnd; en += 1800000) // Check each minute of the day brute force
 			{
 				if(st == en) continue;
 				event.setBegin(new Date(st));
 				event.setEnd(new Date(en));
 				boolean cannotAllocate = false;
-				for(ScheduleEvent e: active)
+				for(ScheduleEvent e: currentEventlist)
 				{
 					if(e.overlaps(event))
 						cannotAllocate = true;
@@ -66,7 +65,7 @@ public class Schedule
 						break;
 				}
 				ScheduleEvent lastBefore = null, firstAfter = null;
-				for(ScheduleEvent e: active)
+				for(ScheduleEvent e: currentEventlist)
 				{
 					if(e.getEnd().getTime() <= st) lastBefore = e;
 					else if(e.getBegin().getTime() >= en)
@@ -81,11 +80,11 @@ public class Schedule
 				double currTime = en - st;
 				double timeCost = Math.abs(timeNeeded - (currTime / (60 * 60 * 1000))) * 4;
 
-				double prevBreak = lastBefore == null? Long.MAX_VALUE: (st - lastBefore.getEnd().getTime()) / (60 * 60 * 1000);
-				double breakAfter = firstAfter == null? Long.MAX_VALUE: (firstAfter.getBegin().getTime() - en) / (60 * 60 * 1000);
+				double prevBreak = lastBefore == null? Long.MAX_VALUE: (st - lastBefore.getEnd().getTime()) / (60.0 * 60 * 1000);
+				double breakAfter = firstAfter == null? Long.MAX_VALUE: (firstAfter.getBegin().getTime() - en) / (60.0 * 60 * 1000);
 
 				double breakCost = Math.max(0, idealBreak - prevBreak) / 3.0 + Math.max(0, idealBreak - breakAfter) / 3.0;
-				double workingLongDurationCost = Math.max((en - st) / (60 * 60 * 1000) - idealWorkingHours, 0) * 1.7;
+				double workingLongDurationCost = Math.max((en - st) / (60.0 * 60 * 1000) - idealWorkingHours, 0) * 1.7;
 
 				double totalCost = workingLongDurationCost + breakCost + timeCost + timeFrameCost;
 				if(totalCost <= minCost)
@@ -96,7 +95,7 @@ public class Schedule
 				}
 			}
 		}
-		if(minCost == Long.MAX_VALUE) return false;
+		if(minCost == Double.MAX_VALUE) return false;
 		event.setBegin(bestStart);
 		event.setEnd(bestEnd);
 		currentEventlist.add(event);
@@ -106,8 +105,7 @@ public class Schedule
 	{
 		double startHour = TimeFrameProductivity.findHour(start);
 		double endHour = TimeFrameProductivity.findHour(end);
-		if(startHour >= bestTimeFrame.getTimeFrameBegin() && endHour <= bestTimeFrame.getTimeFrameEnd()) return 0;
-		return Math.max(0, bestTimeFrame.getTimeFrameBegin() - startHour) + Math.max(0, endHour - bestTimeFrame.getTimeFrameEnd());
+		return Math.pow(Math.abs(bestTimeFrame.getBestWorkingTime() - startHour) + Math.abs(bestTimeFrame.getBestWorkingTime() - endHour), 2) / 6;
 	}
 
 	public boolean addUnchangeableEvent(ScheduleEvent event)

@@ -19,15 +19,15 @@ public class User
 		Date current = new Date(System.currentTimeMillis());
 		ArrayList<Task> active = new ArrayList<>();
 		for(Task e: taskList)
-			if(e.getComplete().compareTo(current) > 0 && Math.abs(e.getPercentDone() - 100) < 0.00001)
+			if(e.getComplete().compareTo(current) > 0 && Math.abs(e.getPercentDone() - 1) < 0.00001)
 				active.add(e);
 		return active;
 	}
 	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
+		event.getAssociatedTask().setPercentDone(completionPercentage);
 		timeFrameProductivity.updateEventCompletion(event, completionPercentage);
 		extendedWorkDuration.updateEventCompletion(event, completionPercentage);
-		event.getAssociatedTask().setPercentDone(completionPercentage);
 	}
 
 	public TimeFrameProductivity getTimeFrameProductivity()
@@ -50,6 +50,12 @@ public class User
 		this.extendedWorkDuration = extendedWorkDuration;
 	}
 
+	public void addTask(Task t)
+	{
+		schedule.addTask(t);
+	}
+
+	public Schedule getSchedule() { return schedule ; }
 	public ArrayList<Task> getTaskList()
 	{
 		return taskList;

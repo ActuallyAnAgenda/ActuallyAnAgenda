@@ -2,16 +2,18 @@ import java.util.Date;
 
 public class Task
 {
+	private String name;
 	private Date complete;
 	private double percentDone;
 	private double time; // Hours Left
 	private byte priority;
 
-	public Task(Date end, long estimate, byte pri)
+	public Task(Date end, double estimate, byte pri, String name)
 	{
 		this.complete = end;
 		this.time = estimate;
 		this.priority = pri;
+		this.name = name;
 	}
 
 	public byte getPriority() { return this.priority; }
@@ -48,5 +50,15 @@ public class Task
 	public void setComplete(Date complete)
 	{
 		this.complete = complete;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }
