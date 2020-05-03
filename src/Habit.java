@@ -1,3 +1,6 @@
+import java.util.Calendar;
+import java.util.TimeZone;
+
 public interface Habit
 {
 	void updateEventCompletion(ScheduleEvent event, double completionPercentage);
@@ -9,7 +12,9 @@ class TimeFrameProductivity implements Habit
 	private double bestWorkingTime;
 	public TimeFrameProductivity()
 	{
-		bestWorkingTime = 13.0; // 1 PM
+		Calendar now = Calendar.getInstance();
+		TimeZone timeZone = now.getTimeZone();
+		bestWorkingTime = 13.0 - timeZone.getOffset(System.currentTimeMillis()) / 3600000; // 1 PM
 	}
 	@Override
 	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)

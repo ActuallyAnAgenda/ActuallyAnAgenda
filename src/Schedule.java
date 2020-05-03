@@ -45,7 +45,7 @@ public class Schedule
 		double idealWorkingHours = workDuration.getMaxHoursWork(), idealBreak = workDuration.getMinHoursBreak();
 		Collections.sort(currentEventlist);
 		int idx = 0;
-		long dayMillisStart = new Date(System.currentTimeMillis()).getTime();
+		long dayMillisStart = (long) Math.ceil((new Date(System.currentTimeMillis()).getTime() + 100) / 1800000.0) * 1800000;
 		long dayMillisEnd = event.getAssociatedTask().getComplete().getTime();
 		double minCost = Double.MAX_VALUE;
 		Date bestStart = null, bestEnd = null;
@@ -105,7 +105,7 @@ public class Schedule
 	{
 		double startHour = TimeFrameProductivity.findHour(start);
 		double endHour = TimeFrameProductivity.findHour(end);
-		return Math.pow(Math.abs(bestTimeFrame.getBestWorkingTime() - startHour) + Math.abs(bestTimeFrame.getBestWorkingTime() - endHour), 2) / 6;
+		return (Math.pow(Math.abs(bestTimeFrame.getBestWorkingTime() - startHour), 2) + Math.pow(Math.abs(bestTimeFrame.getBestWorkingTime() - endHour), 2)) / 20;
 	}
 
 	public boolean addUnchangeableEvent(ScheduleEvent event)
