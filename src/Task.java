@@ -26,5 +26,13 @@ public class Task
 
 	public void setPercentDone(double done) { this.percentDone += done; }
 
-	public void update(TaskUpdate updater) { updater.updateTask(this); }
+	public long getTime()
+	{
+		return time;
+	}
+
+	public void setTime(long time)
+	{
+		this.time = time;
+	}
 }

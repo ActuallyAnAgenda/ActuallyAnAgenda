@@ -1,6 +1,6 @@
 public interface Habit
 {
-	void updateHabits(Schedule thisSchedule, PercentageUpdate baseUpdate);
+	void updateEventCompletion(ScheduleEvent event, double completionPercentage);
 }
 
 class TimeFrameProductivity implements Habit
@@ -13,7 +13,7 @@ class TimeFrameProductivity implements Habit
 		timeFrameEnd = 17.0; // 5 PM;
 	}
 	@Override
-	public void updateHabits(Schedule thisSchedule, PercentageUpdate baseUpdate)
+	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
 		// To Implement
 	}
@@ -49,7 +49,7 @@ class ExtendedWorkDuration implements Habit
 		minHoursBreak = 0.5;
 	}
 	@Override
-	public void updateHabits(Schedule thisSchedule, PercentageUpdate baseUpdate)
+	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
 		// To Implement
 	}
@@ -83,7 +83,7 @@ class Procrastination implements Habit
 		// huh
 	}
 	@Override
-	public void updateHabits(Schedule thisSchedule, PercentageUpdate baseUpdate)
+	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
 
 	}
@@ -96,28 +96,5 @@ class Procrastination implements Habit
 	public void setProcrastinationModel(int procrastinationModel)
 	{
 		this.procrastinationModel = procrastinationModel;
-	}
-}
-class EstimationAccuracy implements Habit
-{
-	private double estimateRatio;
-	public EstimationAccuracy()
-	{
-		estimateRatio = 1; // Default assumes that the estimations are accurate and can accurately represent how much a user needs to actually spend
-	}
-	@Override
-	public void updateHabits(Schedule thisSchedule, PercentageUpdate baseUpdate)
-	{
-
-	}
-
-	public double getEstimateRatio()
-	{
-		return estimateRatio;
-	}
-
-	public void setEstimateRatio(double estimateRatio)
-	{
-		this.estimateRatio = estimateRatio;
 	}
 }

@@ -1,25 +1,25 @@
+import java.util.ArrayList;
+
 public class User
 {
 	private TimeFrameProductivity timeFrameProductivity;
 	private ExtendedWorkDuration extendedWorkDuration;
 	private Procrastination procrastination;
-	private EstimationAccuracy estimationAccuracy;
+	private ArrayList<Task> taskList;
+	private Schedule schedule;
 	public User()
 	{
 		timeFrameProductivity = new TimeFrameProductivity();
 		extendedWorkDuration = new ExtendedWorkDuration();
 		procrastination = new Procrastination();
-		estimationAccuracy = new EstimationAccuracy();
+		taskList = new ArrayList<>();
 	}
 
-	public void updateAllHabits(Schedule thisSchedule, TaskUpdate baseUpdate)
+	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
 	{
-		if(!baseUpdate.getType().equals("PercentageUpdate")) return;
-		PercentageUpdate update = (PercentageUpdate) baseUpdate;
-		timeFrameProductivity.updateHabits(thisSchedule, update);
-		extendedWorkDuration.updateHabits(thisSchedule, update);
-		procrastination.updateHabits(thisSchedule, update);
-		estimationAccuracy.updateHabits(thisSchedule, update);
+		timeFrameProductivity.updateEventCompletion(event, completionPercentage);
+		extendedWorkDuration.updateEventCompletion(event, completionPercentage);
+		procrastination.updateEventCompletion(event, completionPercentage);
 	}
 
 	public TimeFrameProductivity getTimeFrameProductivity()
@@ -52,13 +52,14 @@ public class User
 		this.procrastination = procrastination;
 	}
 
-	public EstimationAccuracy getEstimationAccuracy()
+
+	public ArrayList<Task> getTaskList()
 	{
-		return estimationAccuracy;
+		return taskList;
 	}
 
-	public void setEstimationAccuracy(EstimationAccuracy estimationAccuracy)
+	public void setTaskList(ArrayList<Task> taskList)
 	{
-		this.estimationAccuracy = estimationAccuracy;
+		this.taskList = taskList;
 	}
 }
