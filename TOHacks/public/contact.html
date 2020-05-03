@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ActuallyAnAgenda - Dashboard</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
+        <link rel="stylesheet" href='header.css'>
+        <link rel="stylesheet" href='style.css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+              $("#navbar").hover(function(){
+                $("#fade").css("display", "block");
+                }, function(){
+                $("#fade").css("display", "none");
+              });
+            });
+        </script>
+    </head>
+    <body style="background-color: #f9f9f9;">
+        <header>
+            <nav id="navbar">
+                <ul>
+                    <li>
+                        <a class="button button1"><img src="img/logo.png" alt="logo" width="60"><p class="name">Actually An<br>Agenda</p></a>
+                    </li>
+                    <li>
+                        <a href="agenda.html" class="button button2"><img src="img/calendar.png" alt="logo" width="60"><p>Agenda</p></a>
+                    </li>
+                    <li>
+                        <a href="contact.html" class="button button5"><img src="img/mail.png" alt="logo" width="60"><p>Contact</p></a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div id="fade"></div>
+            <div class="top">
+                <h1>Contact Us</h1>
+            </div>
+            <div style="padding-top: 50px">
+                <p>Ben Zeng: benipad2013@gmail.com</p>
+                <p>Nathan Lu: nathanymlu@gmail.com</p>
+                <p>Matthew Li: hewmatt10@gmail.com</p>
+                <p>Eric Shim: rcshim04@gmail.com</p>
+            </div>
+        </main>
+    </body>
+</html>

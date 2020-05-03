@@ -1,0 +1,25 @@
+[debug] [2020-05-03T17:23:14.481Z] ----------------------------------------------------------------------
+[debug] [2020-05-03T17:23:14.482Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Owner\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2020-05-03T17:23:14.482Z] CLI Version:   8.2.0
+[debug] [2020-05-03T17:23:14.483Z] Platform:      win32
+[debug] [2020-05-03T17:23:14.483Z] Node Version:  v12.14.1
+[debug] [2020-05-03T17:23:14.484Z] Time:          Sun May 03 2020 13:23:14 GMT-0400 (Eastern Daylight Time)
+[debug] [2020-05-03T17:23:14.484Z] ----------------------------------------------------------------------
+[debug] [2020-05-03T17:23:14.484Z] 
+[debug] [2020-05-03T17:23:14.491Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-03T17:23:14.492Z] > authorizing via signed-in user
+[debug] [2020-05-03T17:23:14.492Z] [iam] checking project actuallyanagenda-dae09 for permissions ["firebase.projects.get"]
+[debug] [2020-05-03T17:23:14.495Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/actuallyanagenda-dae09:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2020-05-03T17:23:14.738Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 03 May 2020 17:23:13 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=193","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-03T17:23:14.738Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/actuallyanagenda-dae09  
+ 
+[debug] [2020-05-03T17:23:14.842Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 03 May 2020 17:23:13 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Serving from 'C:\Users\Owner\Documents\TOHacks'...
+[info] 
+[debug] [2020-05-03T17:23:14.846Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/actuallyanagenda-dae09/webApps/-/config  
+ 
+[debug] [2020-05-03T17:23:15.243Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 03 May 2020 17:23:14 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
