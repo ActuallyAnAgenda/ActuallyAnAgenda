@@ -32,26 +32,27 @@ public class Schedule
 		for(int i = 0; i < workSessionsApproximate; i++)
 		{
 			ScheduleEvent event = new ScheduleEvent(null, null, toAdd, this);
-
-			long day = 0;
-			allocateEvent(event, eachWorkSessionTime, day);
+			Date currentDate = new Date(System.currentTimeMillis()), endDate = toAdd.getComplete();
+			allocateEvent(event, eachWorkSessionTime);
 		}
 	}
 
-	public boolean allocateEvent(ScheduleEvent event, double timeNeeded, long epochDay)
+	public boolean allocateEvent(ScheduleEvent event, double timeNeeded)
 	{
 		TimeFrameProductivity productivity = user.getTimeFrameProductivity();
+		ExtendedWorkDuration workDuration = user.getExtendedWorkDuration();
+		double idealWorkingHours = workDuration.getMaxHoursWork(), idealBreak = workDuration.getMinHoursBreak();
 		ArrayList<ScheduleEvent> active = getActiveEvents();
 		Collections.sort(active);
 		int idx = 0;
-		long dayMillisStart = epochDay * 24 * 60 * 60 * 1000;
-		long dayMillisEnd = (epochDay + 1)  * 24 * 60 * 60 * 1000;
+		long dayMillisStart = System.currentTimeMillis();
+		long dayMillisEnd = event.getAssociatedTask().getComplete().getTime();
 
-		long minCost = Integer.MAX_VALUE;
+		double minCost = Long.MAX_VALUE;
 		Date bestStart = null, bestEnd = null;
-		for(long st = dayMillisStart; st <= dayMillisEnd && st <= event.getAssociatedTask().getComplete().getTime(); st += 60000) // Check each minute of the day brute force
+		for(long st = dayMillisStart; st <= dayMillisEnd; st += 60000) // Check each minute of the day brute force
 		{
-			for(long en = dayMillisStart; en <= dayMillisEnd && en <= event.getAssociatedTask().getComplete().getTime(); en += 60000) // Check each minute of the day brute force
+			for(long en = dayMillisStart; en <= dayMillisEnd; en += 60000) // Check each minute of the day brute force
 			{
 				if(st == en) continue;
 				event.setBegin(new Date(st));
@@ -64,15 +65,43 @@ public class Schedule
 					if(cannotAllocate)
 						break;
 				}
+				ScheduleEvent lastBefore = null, firstAfter = null;
+				for(ScheduleEvent e: active)
+				{
+					if(e.getEnd().getTime() <= st) lastBefore = e;
+					else if(e.getBegin().getTime() >= en)
+					{
+						firstAfter = e;
+						break;
+					}
+				}
 				if(cannotAllocate)
 					continue;
-				// TODO find cost
+				double timeFrameCost = findCost(productivity, st, en);
+				double currTime = en - st;
+				double timeCost = Math.abs(timeNeeded - (currTime / (60 * 60 * 1000))) * 4;
+
+				double prevBreak = lastBefore == null? Long.MAX_VALUE: (st - lastBefore.getEnd().getTime()) / (60 * 60 * 1000);
+				double breakAfter = firstAfter == null? Long.MAX_VALUE: (firstAfter.getBegin().getTime() - en) / (60 * 60 * 1000);
+
+				double breakCost = Math.max(0, idealBreak - prevBreak) / 3.0 + Math.max(0, idealBreak - breakAfter) / 3.0;
+				double workingLongDurationCost = Math.max((en - st) / (60 * 60 * 1000) - idealWorkingHours, 0) * 1.7;
+
+				double totalCost = workingLongDurationCost + breakCost + timeCost + timeFrameCost;
+				if(totalCost <= minCost)
+				{
+					minCost = totalCost;
+					bestStart = new Date(st);
+					bestEnd = new Date(en);
+				}
 			}
 		}
-		if(minCost == Integer.MAX_VALUE) return false;
-
+		if(minCost == Long.MAX_VALUE) return false;
+		event.setBegin(bestStart);
+		event.setEnd(bestEnd);
+		currentEventlist.add(event);
+		return true;
 	}
-
 	private static double findCost(TimeFrameProductivity bestTimeFrame, long start, long end)
 	{
 		double startHour = TimeFrameProductivity.findHour(start);
@@ -95,13 +124,8 @@ public class Schedule
 			}
 			else idx++;
 		}
-		for(ScheduleEvent se: conflict) allocateEvent(se, TimeFrameProductivity.findHour(se.getEnd().getTime() - se.getBegin().getTime()), se.getBegin().getTime() / (3600000 * 24));
+		for(ScheduleEvent se: conflict) allocateEvent(se, TimeFrameProductivity.findHour(se.getEnd().getTime() - se.getBegin().getTime()));
 		return true;
-	}
-
-	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
-	{
-
 	}
 
 	public ArrayList<ScheduleEvent> getCurrentEventlist()

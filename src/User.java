@@ -5,14 +5,12 @@ public class User
 {
 	private TimeFrameProductivity timeFrameProductivity;
 	private ExtendedWorkDuration extendedWorkDuration;
-	private Procrastination procrastination;
 	private ArrayList<Task> taskList;
 	private Schedule schedule;
 	public User()
 	{
 		timeFrameProductivity = new TimeFrameProductivity();
 		extendedWorkDuration = new ExtendedWorkDuration();
-		procrastination = new Procrastination();
 		taskList = new ArrayList<>();
 		schedule = new Schedule(this);
 	}
@@ -29,8 +27,7 @@ public class User
 	{
 		timeFrameProductivity.updateEventCompletion(event, completionPercentage);
 		extendedWorkDuration.updateEventCompletion(event, completionPercentage);
-		procrastination.updateEventCompletion(event, completionPercentage);
-		schedule.updateEventCompletion(event, completionPercentage);
+		event.getAssociatedTask().setPercentDone(completionPercentage);
 	}
 
 	public TimeFrameProductivity getTimeFrameProductivity()
@@ -52,17 +49,6 @@ public class User
 	{
 		this.extendedWorkDuration = extendedWorkDuration;
 	}
-
-	public Procrastination getProcrastination()
-	{
-		return procrastination;
-	}
-
-	public void setProcrastination(Procrastination procrastination)
-	{
-		this.procrastination = procrastination;
-	}
-
 
 	public ArrayList<Task> getTaskList()
 	{

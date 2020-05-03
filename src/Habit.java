@@ -78,27 +78,3 @@ class ExtendedWorkDuration implements Habit
 		this.minHoursBreak = minHoursBreak;
 	}
 }
-class Procrastination implements Habit
-{
-	private int procrastinationModel;
-	public Procrastination()
-	{
-		procrastinationModel = 1;
-		// huh
-	}
-	@Override
-	public void updateEventCompletion(ScheduleEvent event, double completionPercentage)
-	{
-
-	}
-
-	public int getProcrastinationModel()
-	{
-		return procrastinationModel;
-	}
-
-	public void setProcrastinationModel(int procrastinationModel)
-	{
-		this.procrastinationModel = procrastinationModel;
-	}
-}
